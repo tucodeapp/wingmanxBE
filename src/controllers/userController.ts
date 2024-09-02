@@ -45,14 +45,48 @@ export const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
+    const token = generateToken(user._id);
     res.status(200).json({
       _id: user.id,
       name: user.name,
       email: user.email,
       success: true,
       message: "User has been created",
-      token: generateToken(user._id),
+      token,
     });
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "arturasnetzet@gmail.com",
+        pass: "vlbx bzaq paun bkkl",
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Please confirm your email",
+      html: `<h1>Confirm your password</h1>
+    <p>Click on the following link to Confirm your password:</p>
+    <a href="http://localhost:5001/confirm-email/${token}">http://localhost:5001/confirm-email/${token}</a>
+    <p>The link will expire in 10 minutes.</p>
+    <p>If you didn't request a confirm email, please ignore this email.</p>`,
+    };
+
+    try {
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          return res.status(500).send({ message: err.message });
+        }
+        res.status(200).send({
+          message: "Confirmation link sent to your email",
+          success: true,
+        });
+      });
+    } catch (err) {
+      res.status(500).send({ message: err.message });
+    }
   } else {
     res.status(400).json({
       message: "Invalid user data. Please try again",
@@ -166,4 +200,27 @@ export const forgetPassword = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
   // Logic for reset password
+};
+
+// @desc   Sent confirm email
+// @route  GET /api/users/confirm-email/:token
+// @access Public
+
+export const confirmEmail = async (req, res) => {
+  try {
+    const { id } = jwt.verify(req.params.token, process.env.JWT_SECRET);
+
+    const user = await User.findByIdAndUpdate(id, { isVerified: true });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Email confirmed successfully", success: true, user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred" });
+  }
 };
