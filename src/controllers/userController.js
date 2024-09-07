@@ -254,6 +254,8 @@ const receiveNotifications = async (req, res) => {
     // Parse the JSON data from the request body
     const notificationData = req.body;
 
+    console.log(req.body);
+
     await User.findByIdAndUpdate(
       "66dc89fbc0f5209be90f76b8",
       { $set: { subscription: notificationData } }, // Update operation
