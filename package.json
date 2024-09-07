@@ -4,9 +4,9 @@
   "type": "module",
   "main": "dist/server.js",
 "scripts": {
-    "start": "node dist/server.js",
+    "start": "node dist/index.js",
     "postinstall": "tsc",
-    "watch-node": "nodemon dist/server.js",
+    "watch-node": "nodemon dist/index.js",
     "watch-ts": "tsc -w",
     "deploy": "git add . && git commit -m Heroku && git push && git push heroku main"
 },
