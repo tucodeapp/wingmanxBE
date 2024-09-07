@@ -258,12 +258,54 @@ const receiveNotifications = async (req, res) => {
       complete: true,
     });
 
-    const user = await User.findOneAndUpdate(
-      { email: "notif@gg.com" }, // Query to find the document by email
-      { $push: { subscription: decoded.payload } } // Update operation
-    );
+    const { signedTransactionInfo, signedRenewalInfo } = decoded?.payload?.data;
 
-    res.status(200);
+    if (signedTransactionInfo && signedRenewalInfo) {
+      const decodedTransactionInfo = jwt.decode(signedTransactionInfo, {
+        complete: true,
+      });
+      const transactionInfoPayload = decodedTransactionInfo.payload;
+
+      // Decode signedRenewalInfo (contains auto-renewal status and related info)
+      const decodedRenewalInfo = jwt.decode(signedRenewalInfo, {
+        complete: true,
+      });
+      const renewalInfoPayload = decodedRenewalInfo.payload;
+
+      // Extract key info from decoded payloads
+      const originalTransactionId =
+        transactionInfoPayload.originalTransactionId;
+      const transactionId = transactionInfoPayload.transactionId;
+      const productId = transactionInfoPayload.productId;
+      const purchaseDate = transactionInfoPayload.purchaseDate;
+      const expiresDate = renewalInfoPayload.expiresDate; // If you want to track expiration
+
+      // Log the extracted information for debugging
+      console.log(`Original Transaction ID: ${originalTransactionId}`);
+      console.log(`Transaction ID: ${transactionId}`);
+      console.log(`Product ID: ${productId}`);
+      console.log(`Purchase Date: ${purchaseDate}`);
+      console.log(`Expires Date: ${expiresDate}`);
+
+      // Find the user in the database using the originalTransactionId
+      const user = await User.findOneAndUpdate(
+        { originalTransactionId }, // Find the user by the originalTransactionId stored when subscription was first created
+        {
+          $set: {
+            // Update the user's subscription details
+            "subscription.productId": productId,
+            "subscription.transactionId": transactionId,
+            "subscription.purchaseDate": purchaseDate,
+            "subscription.expiresDate": expiresDate,
+          },
+        },
+        { new: true, upsert: true } // Create a new entry if no matching user found (upsert)
+      );
+
+      res.status(200);
+    } else {
+      res.status(400);
+    }
 
     // Send the HTML response
   } catch (error) {
