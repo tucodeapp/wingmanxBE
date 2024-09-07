@@ -252,9 +252,8 @@ const confirmEmail = asyncHandler(async (req, res) => {
 const receiveNotifications = (res, req) => {
   try {
     // Parse the JSON data from the request body
-    const notificationData = req.body;
 
-    console.log(notificationData);
+    console.log(req.body);
 
     // Send the HTML response
   } catch (error) {
