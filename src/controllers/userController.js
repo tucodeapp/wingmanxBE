@@ -79,7 +79,7 @@ const registerUser = asyncHandler(async (req, res) => {
           return res.status(500).send({ message: err.message });
         }
         res.status(200).send({
-          message: "Confirmation link sent to your email",
+          message: "Confirmation link sent to your email ",
           success: true,
         });
       });
