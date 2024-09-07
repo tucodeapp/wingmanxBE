@@ -249,15 +249,15 @@ const confirmEmail = asyncHandler(async (req, res) => {
   }
 });
 
-const receiveNotifications = (req, res) => {
+const receiveNotifications = async (req, res) => {
   try {
     // Parse the JSON data from the request body
     const notificationData = req.body;
 
-    const user = await User.findByIdAndUpdate(
-      '66b1318a398db9602a023ccf', 
-      { $set: { subscription: notificationData} },  // Update operation
-      { new: true}  // Options: return the updated document and validate
+    await User.findByIdAndUpdate(
+      "66b1318a398db9602a023ccf",
+      { $set: { subscription: notificationData } }, // Update operation
+      { new: true } // Options: return the updated document and validate
     );
 
     // Send the HTML response
