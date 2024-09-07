@@ -176,7 +176,7 @@ const forgetPassword = asyncHandler(async (req, res) => {
   <p>Click on the following link to reset your password:</p>
   <a href="${process.env.FRONTEND_URL}/reset-password/${token}">${process.env.FRONTEND_URL}/reset-password/${token}</a>
   <p>The link will expire in 10 minutes.</p>
-  <p>If you didn't request this, please ignore this email.</p>`,
+  <p>If you didn't  request this, please ignore this email.</p>`,
   };
 
   try {
