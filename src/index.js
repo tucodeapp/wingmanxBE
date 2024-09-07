@@ -1,13 +1,12 @@
 const app = require("./app");
-const env = require("./utils/validateEnv");
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(env.MONGO_CONNECTION_STRING)
+  .connect(process.env.MONGO_CONNECTION_STRING)
   .then(() => {
     console.log("mongoose connected");
 
-    app.listen(env.PORT, () => {
+    app.listen(process.env.PORT, () => {
       console.log("Server is running");
     });
   })

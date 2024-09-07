@@ -3,7 +3,7 @@ const asyncHandler = require("express-async-handler");
 const { UserSchema: User } = require("../models/userModel");
 const env = require("../utils/validateEnv");
 
-export const protect = asyncHandler(async (req, res, next) => {
+const protect = asyncHandler(async (req, res, next) => {
   let token;
 
   if (
@@ -39,3 +39,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     });
   }
 });
+
+module.exports = {
+  protect,
+};

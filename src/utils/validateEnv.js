@@ -1,8 +1,11 @@
-import { cleanEnv } from "envalid";
-import { str, port } from "envalid/dist/validators";
+const { cleanEnv, str, port } = require("envalid");
 
-export default cleanEnv(process.env, {
+cleanEnv(process.env, {
   MONGO_CONNECTION_STRING: str(),
   PORT: port(),
   JWT_SECRET: str(),
 });
+
+module.exports = {
+  cleanEnv,
+};

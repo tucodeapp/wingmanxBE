@@ -18,4 +18,4 @@ router.post("/reset-password/:token", resetPassword);
 router.get("/confirm-email/:token", confirmEmail);
 router.get("/currentUser", protect, getCurrentUser);
 
-export default router;
+module.exports = router;
