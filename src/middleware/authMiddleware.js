@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
-import asyncHandler from "express-async-handler";
-import { UserSchema as User } from "../models/userModel";
-import env from "../utils/validateEnv";
+const jwt = require("jsonwebtoken");
+const asyncHandler = require("express-async-handler");
+const { UserSchema: User } = require("../models/userModel");
+const env = require("../utils/validateEnv");
 
 export const protect = asyncHandler(async (req, res, next) => {
   let token;

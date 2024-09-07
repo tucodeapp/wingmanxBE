@@ -1,13 +1,13 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   confirmEmail,
   forgetPassword,
   getCurrentUser,
   loginUser,
   registerUser,
   resetPassword,
-} from "../controllers/userController";
-import { protect } from "../middleware/authMiddleware";
+} = require("../controllers/userController");
+const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 

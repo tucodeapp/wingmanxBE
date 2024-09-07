@@ -1,10 +1,10 @@
 //@ts-nocheck
 
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-import asyncHandler from "express-async-handler";
-import { UserSchema as User } from "../models/userModel";
-import nodemailer from "nodemailer";
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const asyncHandler = require("express-async-handler");
+const { UserSchema: User } = require("../models/userModel");
+const nodemailer = require("nodemailer");
 
 // @desc   Register new user
 // @route  POST /api/users/register

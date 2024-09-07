@@ -1,6 +1,6 @@
-import app from "./app";
-import env from "./utils/validateEnv";
-import mongoose from "mongoose";
+const app = require("./app");
+const env = require("./utils/validateEnv");
+const mongoose = require("mongoose");
 
 mongoose
   .connect(env.MONGO_CONNECTION_STRING)
