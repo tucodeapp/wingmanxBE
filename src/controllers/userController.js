@@ -267,7 +267,7 @@ const receiveNotifications = (res, req) => {
     htmlResponse += "</body></html>";
 
     // Send the HTML response
-    res.status(200).send(htmlResponse);
+    console.log(notificationData);
   } catch (error) {
     console.error("Error handling notification:", error);
     res.status(500).send("Internal Server Error.");
