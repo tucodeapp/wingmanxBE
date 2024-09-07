@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const asyncHandler = require("express-async-handler");
 const { UserSchema: User } = require("../models/userModel");
-const env = require("../utils/validateEnv");
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -15,7 +14,7 @@ const protect = asyncHandler(async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
 
       // Verify token
-      const decoded = jwt.verify(token, env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Get user from token
       //@ts-ignore
