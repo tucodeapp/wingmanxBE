@@ -8,7 +8,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (!name || !email || !password) {
     return res.status(400).json({
-      error: "Please add all necessary information!  ",
+      error: "Please add all necessary information!",
     });
   }
 
