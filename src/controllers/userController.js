@@ -255,7 +255,7 @@ const receiveNotifications = async (req, res) => {
     const notificationData = req.body;
 
     await User.findByIdAndUpdate(
-      "66b1318a398db9602a023ccf",
+      "66dc89fbc0f5209be90f76b8",
       { $set: { subscription: notificationData } }, // Update operation
       { new: true } // Options: return the updated document and validate
     );
