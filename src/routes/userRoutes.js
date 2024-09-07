@@ -6,6 +6,7 @@ const {
   loginUser,
   registerUser,
   resetPassword,
+  receiveNotifications,
 } = require("../controllers/userController");
 const { protect } = require("../middleware/authMiddleware");
 
@@ -17,5 +18,6 @@ router.post("/forgetPassword", forgetPassword);
 router.post("/reset-password/:token", resetPassword);
 router.get("/confirm-email/:token", confirmEmail);
 router.get("/currentUser", protect, getCurrentUser);
+router.post("/nofications", receiveNotifications);
 
 module.exports = router;
