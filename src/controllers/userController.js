@@ -258,7 +258,7 @@ const receiveNotifications = async (req, res) => {
 
     const user = await User.findOneAndUpdate(
       { email: "notif@gg.com" }, // Query to find the document by email
-      { $set: { subscription: newSubscription } }, // Update operation
+      { $set: { subscription: notificationData } }, // Update operation
       { new: true, runValidators: true } // Options: return the updated document and validate
     );
 
