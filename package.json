@@ -2,12 +2,12 @@
   "name": "be_auth_template",
   "version": "1.0.0",
   "main": "dist/server.js",
-  "scripts": {
-    "build": "npx tsc",
-    "heroku-postbuild": "npm install --only=dev && npm run build",
-    "start": "npm run build && node dist/server.js",
-    "lint": "eslint ."
-  },
+"scripts": {
+  "build": "tsc",
+  "start": "npm run build && node dist/server.js",
+  "heroku-postbuild": "npm install --only=dev && npm run build",
+  "lint": "eslint ."
+},
   "author": "",
   "license": "ISC",
   "description": "",
