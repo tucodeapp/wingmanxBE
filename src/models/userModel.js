@@ -1,86 +1,38 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// Define subscription schema
 const subscriptionSchema = new Schema({
-  originalTransactionId: {
-    type: String,
-  },
-  autoRenewProductId: {
-    type: String,
-  },
-  productId: {
-    type: String,
-  },
-  autoRenewStatus: {
-    type: Number,
-  },
-  renewalPrice: {
-    type: Number,
-  },
-  currency: {
-    type: String,
-  },
-  signedDate: {
-    type: Number,
-  },
-  environment: {
-    type: String,
-  },
-  recentSubscriptionStartDate: {
-    type: Number,
-  },
-  renewalDate: {
-    type: Number,
-  },
-  transactionId: {
-    type: String,
-  },
-  webOrderLineItemId: {
-    type: String,
-  },
-  bundleId: {
-    type: String,
-  },
-  subscriptionGroupIdentifier: {
-    type: String,
-  },
-  purchaseDate: {
-    type: Number,
-  },
-  originalPurchaseDate: {
-    type: Number,
-  },
-  expiresDate: {
-    type: Number,
-  },
-  quantity: {
-    type: Number,
-  },
-  type: {
-    type: String,
-  },
-  inAppOwnershipType: {
-    type: String,
-  },
-  transactionReason: {
-    type: String,
-  },
-  storefront: {
-    type: String,
-  },
-  storefrontId: {
-    type: String,
-  },
-  price: {
-    type: Number,
-  },
+  originalTransactionId: String,
+  autoRenewProductId: String,
+  productId: String,
+  autoRenewStatus: Number,
+  renewalPrice: Number,
+  currency: String,
+  signedDate: Number,
+  environment: String,
+  recentSubscriptionStartDate: Number,
+  renewalDate: Number,
+  transactionId: String,
+  webOrderLineItemId: String,
+  bundleId: String,
+  subscriptionGroupIdentifier: String,
+  purchaseDate: Number,
+  originalPurchaseDate: Number,
+  expiresDate: Number,
+  quantity: Number,
+  type: String,
+  inAppOwnershipType: String,
+  transactionReason: String,
+  storefront: String,
+  storefrontId: String,
+  price: Number,
 });
 
+// Define user schema with subscription as an embedded document
 const userSchema = new Schema(
   {
-    name: {
-      type: String,
-    },
+    name: String,
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -92,7 +44,7 @@ const userSchema = new Schema(
     },
     subscription: {
       type: subscriptionSchema,
-      default: {},
+      default: {}, // Default to an empty object if no subscription data is provided
     },
   },
   {
@@ -100,8 +52,8 @@ const userSchema = new Schema(
   }
 );
 
-const UserSchema = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = {
-  UserSchema,
+  User,
 };
