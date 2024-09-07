@@ -42,10 +42,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
-    subscription: {
-      type: subscriptionSchema,
-      default: {}, // Default to an empty object if no subscription data is provided
-    },
   },
   {
     timestamps: true,
