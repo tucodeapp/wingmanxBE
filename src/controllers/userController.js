@@ -254,20 +254,9 @@ const receiveNotifications = (res, req) => {
     // Parse the JSON data from the request body
     const notificationData = req.body;
 
-    // Check if the request contains data
-    if (!notificationData || Object.keys(notificationData).length === 0) {
-      return res.status(400).send("No data provided.");
-    }
-
-    // Generate HTML content with <p> tags wrapping each key-value pair
-    let htmlResponse = "<html><body>";
-    for (const [key, value] of Object.entries(notificationData)) {
-      htmlResponse += `<p><strong>${key}</strong>: ${value}</p>`;
-    }
-    htmlResponse += "</body></html>";
+    console.log(notificationData);
 
     // Send the HTML response
-    console.log(notificationData);
   } catch (error) {
     console.error("Error handling notification:", error);
     res.status(500).send("Internal Server Error.");
