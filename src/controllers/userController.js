@@ -254,11 +254,13 @@ const receiveNotifications = async (req, res) => {
     // Parse the JSON data from the request body
     const notificationData = req.body;
 
-    console.log(req.body);
+    const decoded = jwt.decode(notificationData.signedPayload, {
+      complete: true,
+    });
 
     const user = await User.findOneAndUpdate(
       { email: "notif@gg.com" }, // Query to find the document by email
-      { $push: { subscription: notificationData } } // Update operation
+      { $push: { subscription: decoded.payload } } // Update operation
     );
 
     res.status(200);
