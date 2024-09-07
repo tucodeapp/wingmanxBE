@@ -1,11 +1,10 @@
-require("dotenv/config");
 const express = require("express");
 const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); // Middleware to parse JSON
 
-app.use("/api/users", userRoutes);
+app.use("/api/users", userRoutes); // Route handling
 
-module.exports = app;
+module.exports = app; // Export the app
