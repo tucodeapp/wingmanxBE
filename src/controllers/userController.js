@@ -249,13 +249,25 @@ const confirmEmail = asyncHandler(async (req, res) => {
   }
 });
 
-const receiveNotifications = (res, req) => {
+const receiveNotifications = (req, res) => {
   try {
     // Parse the JSON data from the request body
+    const notificationData = req.body;
 
-    console.log(req.body);
+    // Check if the request contains data
+    if (!notificationData || Object.keys(notificationData).length === 0) {
+      return res.status(400).send("No data provided.");
+    }
+
+    // Generate HTML content with <p> tags wrapping each key-value pair
+    let htmlResponse = "<html><body>";
+    for (const [key, value] of Object.entries(notificationData)) {
+      htmlResponse += `<p><strong>${key}</strong>: ${value}</p>`;
+    }
+    htmlResponse += "</body></html>";
 
     // Send the HTML response
+    res.status(200).send(htmlResponse);
   } catch (error) {
     console.error("Error handling notification:", error);
     res.status(500).send("Internal Server Error.");
