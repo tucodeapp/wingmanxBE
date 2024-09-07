@@ -20,6 +20,10 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    subscription: {
+      type: Array,
+      default: [],
+    },
   },
   {
     timestamps: true,
