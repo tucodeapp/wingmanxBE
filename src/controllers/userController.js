@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const { UserSchema: User } = require("../models/userModel");
+const axios = require("axios");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -143,10 +144,21 @@ const receiveNotifications = async (req, res) => {
 };
 
 const validateReceipt = asyncHandler(async (req, res) => {
-  const receipt = req.body;
+  const { receipt, _id } = req.body;
 
-  console.log(receipt.receipt);
-  console.log(receip._id);
+  if (!receipt || !_id) {
+    return res.status(400).json({ message: "Missing receipt or user ID" });
+  }
+
+  const response = await axios.post(
+    "https://sandbox.itunes.apple.com/verifyReceipt",
+    {
+      "receipt-data": receipt,
+      password: "ac06543ca9d44f6086d600cb40246693",
+    }
+  );
+
+  console.log(response);
 });
 
 module.exports = {
