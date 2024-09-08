@@ -144,10 +144,10 @@ const receiveNotifications = async (req, res) => {
 };
 
 const validateReceipt = asyncHandler(async (req, res) => {
-  const { receipt, userId } = req.body;
+  const { receipt, userEmail } = req.body;
 
   console.log(receipt, "receipt");
-  console.log(userId, "id");
+  console.log(userEmail, "id");
 
   if (!receipt || !userId) {
     return res.status(400).json({ message: "Missing receipt or user ID" });
@@ -163,7 +163,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
 
   // Update the user's subscription field with the validated receipt data
   const updatedUser = await User.findOneAndUpdate(
-    { _id: userId },
+    { email: userEmail },
     {
       $set: {
         subscription: response, // Assign the response object here
