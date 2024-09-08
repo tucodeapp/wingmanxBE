@@ -156,8 +156,8 @@ const validateReceipt = asyncHandler(async (req, res) => {
   // Simulate receipt validation
   const response = {
     info: "Validated receipt", // You should replace this with actual validation logic
-    transactionId: receipt.transactionId, // Example field from the receipt
-    productId: receipt.productId, // Example field from the receipt
+    transactionId: receipt, // Example field from the receipt
+    productId: receipt, // Example field from the receipt
     purchaseDate: new Date(), // Add more fields as needed
   };
 
