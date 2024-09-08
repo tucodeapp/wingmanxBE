@@ -167,7 +167,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
     { email: userEmail },
     {
       $set: {
-        subscription: response, // Assign the response object here
+        subscription: response.data, // Assign the response object here
       },
     },
     { new: true, upsert: true } // Return the updated document and create it if it doesn't exist
