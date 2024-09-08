@@ -142,9 +142,16 @@ const receiveNotifications = async (req, res) => {
   }
 };
 
+const validateReceipt = asyncHandler(async (req, res) => {
+  const receipt = req.body;
+
+  console.log(receipt);
+});
+
 module.exports = {
   registerUser,
   loginUser,
   getCurrentUser,
   receiveNotifications,
+  validateReceipt,
 };
