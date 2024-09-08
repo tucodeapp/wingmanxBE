@@ -153,13 +153,9 @@ const validateReceipt = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Missing receipt or user ID" });
   }
 
-  const response = await axios.post(
-    "https://sandbox.itunes.apple.com/verifyReceipt",
-    {
-      "receipt-data": receipt,
-      password: "ac06543ca9d44f6086d600cb40246693",
-    }
-  );
+  const response = {
+    info: "",
+  };
 
   await User.findOneAndUpdate(
     { _id: userId },
