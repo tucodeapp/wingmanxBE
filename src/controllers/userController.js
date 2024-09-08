@@ -136,6 +136,9 @@ const receiveNotifications = async (req, res) => {
 const validateReceipt = asyncHandler(async (req, res) => {
   const { receipt, userEmail } = req.body;
 
+  console.log(receipt.length, "length");
+  console.log(userEmail, "length");
+
   if (!receipt || !userEmail) {
     return res.status(400).json({ message: "Missing receipt or user ID" });
   }
