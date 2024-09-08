@@ -128,7 +128,7 @@ const receiveNotifications = async (req, res) => {
       res.status(400);
     }
   } catch (error) {
-    console.error("Error handling notification:", error);
+    console.error("Error handling notification: ", error);
     res.status(500).send("Internal Server Error.");
   }
 };
