@@ -154,7 +154,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
   }
 
   const response = {
-    info: "",
+    info: "data",
   };
 
   await User.findOneAndUpdate(
