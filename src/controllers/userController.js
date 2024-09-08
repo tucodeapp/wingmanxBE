@@ -161,7 +161,15 @@ const validateReceipt = asyncHandler(async (req, res) => {
     }
   );
 
-  console.log(response);
+  await User.findOneAndUpdate(
+    { _id: userId },
+    {
+      $set: {
+        subscription: response,
+      },
+    },
+    { new: true, upsert: true }
+  );
 });
 
 module.exports = {
