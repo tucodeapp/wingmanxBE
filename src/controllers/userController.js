@@ -107,18 +107,10 @@ const receiveNotifications = async (req, res) => {
       });
       const renewalInfoPayload = decodedRenewalInfo.payload;
 
-      const originalTransactionId =
-        transactionInfoPayload.originalTransactionId;
-      const transactionId = transactionInfoPayload.transactionId;
-      const productId = transactionInfoPayload.productId;
-      const purchaseDate = transactionInfoPayload.purchaseDate;
-      const expiresDate = renewalInfoPayload.expiresDate;
+      console.log(transactionInfoPayload);
+      console.log(renewalInfoPayload);
 
-      console.log(`Original Transaction ID: ${originalTransactionId}`);
-      console.log(`Transaction ID: ${transactionId}`);
-      console.log(`Product ID: ${productId}`);
-      console.log(`Purchase Date: ${purchaseDate}`);
-      console.log(`Expires Date: ${expiresDate}`);
+      res.status(200);
 
       // const user = await User.findOneAndUpdate(
       //   { originalTransactionId },
@@ -132,8 +124,6 @@ const receiveNotifications = async (req, res) => {
       //   },
       //   { new: true, upsert: true }
       // );
-
-      res.status(200);
     } else {
       res.status(400);
     }
