@@ -153,23 +153,21 @@ const validateReceipt = asyncHandler(async (req, res) => {
     }
   );
 
-  // const { original_transaction_id } = response.data.latest_receipt_info.sort(
-  //   (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
-  // )[0];
+  const { original_transaction_id } = response.data.latest_receipt_info.sort(
+    (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
+  )[0];
 
-  // await User.findOneAndUpdate(
-  //   { email: userEmail },
-  //   {
-  //     $set: {
-  //       "subscription.originalTransactionId": original_transaction_id,
-  //       "subscription.isIntroOfferPeriodExpired": true,
-  //       "subscription.isUserSubscribedToIAP": true,
-  //     },
-  //   },
-  //   { new: true, upsert: true }
-  // );
-
-  console.log(response.data.status, "STATUS!!!!!!!!");
+  await User.findOneAndUpdate(
+    { email: userEmail },
+    {
+      $set: {
+        "subscription.originalTransactionId": original_transaction_id,
+        "subscription.isIntroOfferPeriodExpired": true,
+        "subscription.isUserSubscribedToIAP": true,
+      },
+    },
+    { new: true, upsert: true }
+  );
 
   res
     .status(200)
