@@ -88,45 +88,47 @@ const generateToken = (id) => {
 
 const receiveNotifications = async (req, res) => {
   try {
-    const notificationData = req.body;
+    // const notificationData = req.body;
 
-    const decoded = jwt.decode(notificationData.signedPayload, {
-      complete: true,
-    });
+    // const decoded = jwt.decode(notificationData.signedPayload, {
+    //   complete: true,
+    // });
 
-    const { signedTransactionInfo, signedRenewalInfo } = decoded?.payload?.data;
+    // const { signedTransactionInfo, signedRenewalInfo } = decoded?.payload?.data;
 
-    if (signedTransactionInfo && signedRenewalInfo) {
-      const decodedTransactionInfo = jwt.decode(signedTransactionInfo, {
-        complete: true,
-      });
-      const transactionInfoPayload = decodedTransactionInfo.payload;
+    // if (signedTransactionInfo && signedRenewalInfo) {
+    //   const decodedTransactionInfo = jwt.decode(signedTransactionInfo, {
+    //     complete: true,
+    //   });
+    //   const transactionInfoPayload = decodedTransactionInfo.payload;
 
-      const decodedRenewalInfo = jwt.decode(signedRenewalInfo, {
-        complete: true,
-      });
-      const renewalInfoPayload = decodedRenewalInfo.payload;
+    //   const decodedRenewalInfo = jwt.decode(signedRenewalInfo, {
+    //     complete: true,
+    //   });
+    //   const renewalInfoPayload = decodedRenewalInfo.payload;
 
-      await User.findOneAndUpdate(
-        {
-          "subscription.originalTransactionId":
-            transactionInfoPayload.originalTransactionId,
-        },
-        {
-          $set: {
-            subscription: {
-              "subscription.latestTransaction": transactionInfoPayload,
-              "subscription.latestRenewalInfo": renewalInfoPayload,
-            },
-          },
-        },
-        { new: true, upsert: true }
-      );
+    //   await User.findOneAndUpdate(
+    //     {
+    //       "subscription.originalTransactionId":
+    //         transactionInfoPayload.originalTransactionId,
+    //     },
+    //     {
+    //       $set: {
+    //         subscription: {
+    //           "subscription.latestTransaction": transactionInfoPayload,
+    //           "subscription.latestRenewalInfo": renewalInfoPayload,
+    //         },
+    //       },
+    //     },
+    //     { new: true, upsert: true }
+    //   );
 
-      res.status(200);
-    } else {
-      res.status(400);
-    }
+    //   res.status(200);
+    // } else {
+    //   res.status(400);
+    // }
+
+    console.log("RECEIVED NOTIF!!!!");
   } catch (error) {
     console.error("Error handling notification: ", error);
     res.status(500).send("Internal Server Error.");
@@ -151,21 +153,23 @@ const validateReceipt = asyncHandler(async (req, res) => {
     }
   );
 
-  const { original_transaction_id } = response.data.latest_receipt_info.sort(
-    (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
-  )[0];
+  // const { original_transaction_id } = response.data.latest_receipt_info.sort(
+  //   (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
+  // )[0];
 
-  await User.findOneAndUpdate(
-    { email: userEmail },
-    {
-      $set: {
-        "subscription.originalTransactionId": original_transaction_id,
-        "subscription.isIntroOfferPeriodExpired": true,
-        "subscription.isUserSubscribedToIAP": true,
-      },
-    },
-    { new: true, upsert: true }
-  );
+  // await User.findOneAndUpdate(
+  //   { email: userEmail },
+  //   {
+  //     $set: {
+  //       "subscription.originalTransactionId": original_transaction_id,
+  //       "subscription.isIntroOfferPeriodExpired": true,
+  //       "subscription.isUserSubscribedToIAP": true,
+  //     },
+  //   },
+  //   { new: true, upsert: true }
+  // );
+
+  console.log(response.data.status, "STATUS!!!!!!!!");
 
   res
     .status(200)
