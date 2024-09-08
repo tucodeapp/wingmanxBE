@@ -154,12 +154,13 @@ const validateReceipt = asyncHandler(async (req, res) => {
   }
 
   // Simulate receipt validation
-  const response = {
-    info: "Validated receipt", // You should replace this with actual validation logic
-    transactionId: receipt, // Example field from the receipt
-    productId: receipt, // Example field from the receipt
-    purchaseDate: new Date(), // Add more fields as needed
-  };
+  const response = await axios.post(
+    "https://sandbox.itunes.apple.com/verifyReceipt",
+    {
+      "receipt-data": receipt,
+      password: "ac06543ca9d44f6086d600cb40246693", // Optional for subscriptions
+    }
+  );
 
   // Update the user's subscription field with the validated receipt data
   const updatedUser = await User.findOneAndUpdate(
