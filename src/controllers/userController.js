@@ -149,7 +149,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
   console.log(receipt, "receipt");
   console.log(userEmail, "id");
 
-  if (!receipt || !userId) {
+  if (!receipt || !userEmail) {
     return res.status(400).json({ message: "Missing receipt or user ID" });
   }
 
