@@ -120,18 +120,18 @@ const receiveNotifications = async (req, res) => {
       console.log(`Purchase Date: ${purchaseDate}`);
       console.log(`Expires Date: ${expiresDate}`);
 
-      const user = await User.findOneAndUpdate(
-        { originalTransactionId },
-        {
-          $set: {
-            "subscription.productId": productId,
-            "subscription.transactionId": transactionId,
-            "subscription.purchaseDate": purchaseDate,
-            "subscription.expiresDate": expiresDate,
-          },
-        },
-        { new: true, upsert: true }
-      );
+      // const user = await User.findOneAndUpdate(
+      //   { originalTransactionId },
+      //   {
+      //     $set: {
+      //       "subscription.productId": productId,
+      //       "subscription.transactionId": transactionId,
+      //       "subscription.purchaseDate": purchaseDate,
+      //       "subscription.expiresDate": expiresDate,
+      //     },
+      //   },
+      //   { new: true, upsert: true }
+      // );
 
       res.status(200);
     } else {
@@ -146,35 +146,41 @@ const receiveNotifications = async (req, res) => {
 const validateReceipt = asyncHandler(async (req, res) => {
   const { receipt, userEmail } = req.body;
 
-  console.log(receipt, "receipt");
-  console.log(userEmail, "id");
-
   if (!receipt || !userEmail) {
     return res.status(400).json({ message: "Missing receipt or user ID" });
   }
 
-  // Simulate receipt validation
   const response = await axios.post(
     "https://sandbox.itunes.apple.com/verifyReceipt",
     {
       "receipt-data": receipt,
-      password: "ac06543ca9d44f6086d600cb40246693", // Optional for subscriptions
+      password: "ac06543ca9d44f6086d600cb40246693",
     }
   );
 
-  // Update the user's subscription field with the validated receipt data
-  const updatedUser = await User.findOneAndUpdate(
+  const { original_transaction_id, expires_date_ms, product_id } =
+    response.data.latest_receipt_info.sort(
+      (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
+    )[0];
+
+  await User.findOneAndUpdate(
     { email: userEmail },
     {
       $set: {
-        subscription: response.data, // Assign the response object here
+        subscription: {
+          latestSubscription: {
+            expiryDate: expires_date_ms,
+            productId: product_id,
+          },
+          originalTransactionId: original_transaction_id,
+          isIntroOfferPeriodExpired: true,
+        },
       },
     },
-    { new: true, upsert: true } // Return the updated document and create it if it doesn't exist
+    { new: true, upsert: true }
   );
 
-  // Send the updated user back as the response
-  res.status(200).json({ message: "Subscription updated", user: updatedUser });
+  res.status(200).json({ message: "Subscription updated" });
 });
 
 module.exports = {
