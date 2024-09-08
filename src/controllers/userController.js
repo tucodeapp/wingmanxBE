@@ -107,23 +107,23 @@ const receiveNotifications = async (req, res) => {
       });
       const renewalInfoPayload = decodedRenewalInfo.payload;
 
-      console.log(transactionInfoPayload);
-      console.log(renewalInfoPayload);
+      await User.findOneAndUpdate(
+        {
+          "subscription.originalTransactionId":
+            transactionInfoPayload.originalTransactionId,
+        },
+        {
+          $set: {
+            subscription: {
+              "subscription.latestTransaction": transactionInfoPayload,
+              "subscription.latestRenewalInfo": renewalInfoPayload,
+            },
+          },
+        },
+        { new: true, upsert: true }
+      );
 
       res.status(200);
-
-      // const user = await User.findOneAndUpdate(
-      //   { originalTransactionId },
-      //   {
-      //     $set: {
-      //       "subscription.productId": productId,
-      //       "subscription.transactionId": transactionId,
-      //       "subscription.purchaseDate": purchaseDate,
-      //       "subscription.expiresDate": expiresDate,
-      //     },
-      //   },
-      //   { new: true, upsert: true }
-      // );
     } else {
       res.status(400);
     }
@@ -148,22 +148,18 @@ const validateReceipt = asyncHandler(async (req, res) => {
     }
   );
 
-  const { original_transaction_id, expires_date_ms, product_id } =
-    response.data.latest_receipt_info.sort(
-      (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
-    )[0];
+  const { original_transaction_id } = response.data.latest_receipt_info.sort(
+    (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
+  )[0];
 
   await User.findOneAndUpdate(
     { email: userEmail },
     {
       $set: {
         subscription: {
-          latestSubscription: {
-            expiryDate: expires_date_ms,
-            productId: product_id,
-          },
           originalTransactionId: original_transaction_id,
           isIntroOfferPeriodExpired: true,
+          isUserSubscribedToIAP: true,
         },
       },
     },

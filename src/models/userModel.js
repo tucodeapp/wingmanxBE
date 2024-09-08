@@ -1,16 +1,29 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Define subscription schema
 const subscriptionSchema = new Schema(
   {
     originalTransactionId: {
       type: String,
-      default: undefined,
+      default: "",
     },
     isIntroOfferPeriodExpired: {
       type: Boolean,
       default: false,
+    },
+    isSubscriptionExpired: {
+      type: Boolean,
+      default: false,
+    },
+    isUserSubscribedToIAP: {
+      type: Boolean,
+      default: false,
+    },
+    latestTransaction: {
+      type: Schema.Types.Mixed,
+    },
+    latestRenewalInfo: {
+      type: Schema.Types.Mixed,
     },
   },
   { _id: false }

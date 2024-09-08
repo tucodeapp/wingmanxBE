@@ -1,8 +1,8 @@
-require("dotenv").config(); // Load environment variables first
+require("dotenv").config();
 const mongoose = require("mongoose");
-const app = require("./app"); // Import the app after loading environment variables
+const app = require("./app");
 
-const PORT = process.env.PORT || 3000; // Default to port 3000 if not set
+const PORT = process.env.PORT || 3000;
 
 mongoose
   .connect(process.env.MONGO_CONNECTION_STRING, {

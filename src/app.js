@@ -3,8 +3,8 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-app.use(express.json()); // Middleware to parse JSON
+app.use(express.json());
 
-app.use("/api/users", userRoutes); // Route handling
+app.use("/api/users", userRoutes);
 
-module.exports = app; // Export the app
+module.exports = app;
