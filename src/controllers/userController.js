@@ -145,7 +145,8 @@ const receiveNotifications = async (req, res) => {
 const validateReceipt = asyncHandler(async (req, res) => {
   const receipt = req.body;
 
-  console.log(receipt);
+  console.log(receipt.receipt);
+  console.log(receip._id);
 });
 
 module.exports = {
