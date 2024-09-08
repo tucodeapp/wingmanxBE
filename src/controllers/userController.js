@@ -153,19 +153,27 @@ const validateReceipt = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Missing receipt or user ID" });
   }
 
+  // Simulate receipt validation
   const response = {
-    info: "data",
+    info: "Validated receipt", // You should replace this with actual validation logic
+    transactionId: receipt.transactionId, // Example field from the receipt
+    productId: receipt.productId, // Example field from the receipt
+    purchaseDate: new Date(), // Add more fields as needed
   };
 
-  await User.findOneAndUpdate(
+  // Update the user's subscription field with the validated receipt data
+  const updatedUser = await User.findOneAndUpdate(
     { _id: userId },
     {
       $set: {
-        subscription: response,
+        subscription: response, // Assign the response object here
       },
     },
-    { new: true, upsert: true }
+    { new: true, upsert: true } // Return the updated document and create it if it doesn't exist
   );
+
+  // Send the updated user back as the response
+  res.status(200).json({ message: "Subscription updated", user: updatedUser });
 });
 
 module.exports = {
