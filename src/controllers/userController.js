@@ -156,17 +156,17 @@ const validateReceipt = asyncHandler(async (req, res) => {
     { email: userEmail },
     {
       $set: {
-        subscription: {
-          originalTransactionId: original_transaction_id,
-          isIntroOfferPeriodExpired: true,
-          isUserSubscribedToIAP: true,
-        },
+        "subscription.originalTransactionId": original_transaction_id,
+        "subscription.isIntroOfferPeriodExpired": true,
+        "subscription.isUserSubscribedToIAP": true,
       },
     },
     { new: true, upsert: true }
   );
 
-  res.status(200).json({ message: "Subscription updated" });
+  res
+    .status(200)
+    .json({ message: "Subscription updated", status: response.data.status });
 });
 
 module.exports = {
