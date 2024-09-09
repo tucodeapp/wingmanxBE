@@ -95,8 +95,33 @@ const receiveNotifications = async (req, res) => {
 
     if (!notificationData.signedPayload) {
       const decodedData = base64.decode(notificationData?.message.data);
-      const jsonData = JSON.parse(decodedData);
-      console.log(jsonData, "android data");
+      const {
+        subscriptionNotification: {
+          purchaseToken,
+          subscriptionId,
+          packageName,
+        },
+      } = JSON.parse(decodedData);
+
+      try {
+        const res = await axios.post(
+          `https://app.wingmanx.ai/api/app/token`,
+          {}
+        );
+        const url =
+          "https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
+          `/${packageName}/purchases/subscriptions/${subscriptionId}` +
+          `/tokens/${purchaseToken}?access_token=${res.data.token}`;
+
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log(response, "ANDROID RESULT");
+      } catch (error) {}
     } else {
       const decoded = jwt.decode(notificationData?.signedPayload, {
         complete: true,
