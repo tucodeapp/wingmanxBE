@@ -94,7 +94,9 @@ const receiveNotifications = async (req, res) => {
     res.status(200).send("Notification received");
 
     if (!notificationData.signedPayload) {
-      console.log(notificationData, "signedPayload false");
+      const decodedData = base64.decode(notificationData?.message.data);
+      const jsonData = JSON.parse(decodedData);
+      console.log(jsonData, "android data");
     } else {
       const decoded = jwt.decode(notificationData?.signedPayload, {
         complete: true,
@@ -119,15 +121,6 @@ const receiveNotifications = async (req, res) => {
 
         console.log("action 2");
       }
-
-      // if (notificationData?.message.data) {
-      //   const decodedData = base64.decode(notificationData?.message.data);
-      //   const jsonData = JSON.parse(decodedData);
-      //   console.log(jsonData, "android data");
-      // } else {
-
-      //   }
-      // }
     }
   } catch (error) {
     console.error("Error handling notification: ", error);
