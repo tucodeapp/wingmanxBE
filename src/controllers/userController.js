@@ -116,6 +116,8 @@ const receiveNotifications = async (req, res) => {
 
         console.log(transactionInfoPayload);
         console.log(renewalInfoPayload);
+
+        console.log("action 2");
       }
 
       // if (notificationData?.message.data) {
@@ -155,7 +157,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
     (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
   )[0];
 
-  await User.findOneAndUpdate(
+  const user = await User.findOneAndUpdate(
     { email: userEmail },
     {
       $set: {
@@ -166,6 +168,8 @@ const validateReceipt = asyncHandler(async (req, res) => {
     },
     { new: true, upsert: true }
   );
+
+  console.log(user, "action 1");
 
   res
     .status(200)
