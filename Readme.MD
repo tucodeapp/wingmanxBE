@@ -110,6 +110,8 @@ const receiveNotifications = async (req, res) => {
 
         console.log(transactionInfoPayload);
         console.log(renewalInfoPayload);
+
+        // Ir va cia reiktu pradeti ieskot userio pagal  transactionInfoPayload.originalTransactionId ir tada handlinti viska pagal info kuria nurodysiu zemiau.
       }
     }
   } catch (error) {
@@ -119,4 +121,101 @@ const receiveNotifications = async (req, res) => {
 };
 ```
 
-## IOS RESPONSE PAVYZDZIAI:
+## IOS Notification PAVYZDZIAI:
+
+### Pirmas subscription isigytas su nuolaida.
+
+```javascript
+
+
+// Cekio informacija
+{
+  transactionId: '2000000708915755',
+  originalTransactionId: '2000000708915755',
+  webOrderLineItemId: '2000000073537378',
+  bundleId: 'com.wingmanx',
+  productId: 'wingmanxmonthly',
+  subscriptionGroupIdentifier: '21519369',
+  purchaseDate: 1725878807000,
+  originalPurchaseDate: 1725878808000,
+  expiresDate: 1725879107000,
+  quantity: 1,
+  type: 'Auto-Renewable Subscription',
+  inAppOwnershipType: 'PURCHASED',
+  signedDate: 1725878815681,
+  offerType: 1,
+  environment: 'Sandbox',
+  transactionReason: 'PURCHASE',
+  storefront: 'LTU',
+  storefrontId: '143520',
+  // Kaina su nuolaida
+  price: 17990,
+  currency: 'EUR',
+  offerDiscountType: 'PAY_UP_FRONT'
+}
+
+// Subscriptiono informacija
+{
+  originalTransactionId: '2000000708915755',
+  autoRenewProductId: 'wingmanxmonthly',
+  productId: 'wingmanxmonthly',
+  // 1 reiskia all good, 0 reiskia, kad nebeatsinaujina subas.
+  autoRenewStatus: 1,
+  // Cia rodo pilna kaina sito subo.
+  renewalPrice: 34990,
+  currency: 'EUR',
+  signedDate: 1725878815681,
+  environment: 'Sandbox',
+  recentSubscriptionStartDate: 1725878807000,
+  renewalDate: 1725879107000
+}
+
+```
+
+### Pirmas subscription buvo isigytas su nuolaida, taciau pirmasis "menesis" prabego ir jau reikia moketi pilna kaina gauname nauja notification:
+
+```javascript
+{
+  // Naujo transactiono naujas id
+  transactionId: '2000000708922025',
+  // Orginalus transactionId pagal kuri ieskome userio
+  originalTransactionId: '2000000708915755',
+  webOrderLineItemId: '2000000073537379',
+  bundleId: 'com.wingmanx',
+  productId: 'wingmanxmonthly',
+  subscriptionGroupIdentifier: '21519369',
+  purchaseDate: 1725879107000,
+  originalPurchaseDate: 1725878808000,
+  expiresDate: 1725879407000,
+  quantity: 1,
+  type: 'Auto-Renewable Subscription',
+  inAppOwnershipType: 'PURCHASED',
+  signedDate: 1725879059990,
+  environment: 'Sandbox',
+  transactionReason: 'RENEWAL',
+  storefront: 'LTU',
+  storefrontId: '143520',
+// Pilna kaina
+  price: 34990,
+  currency: 'EUR'
+}
+{
+  originalTransactionId: '2000000708915755',
+  autoRenewProductId: 'wingmanxmonthly',
+  productId: 'wingmanxmonthly',
+  // Statusas vis dar 1
+  autoRenewStatus: 1,
+  renewalPrice: 34990,
+  currency: 'EUR',
+  signedDate: 1725879059990,
+  environment: 'Sandbox',
+  recentSubscriptionStartDate: 1725878807000,
+  renewalDate: 1725879407000
+}
+```
+
+### Pirmas subscription buvo isigytas su nuolaida. Vienas menesis praejo uz kuri sumokejom. Atejo sekantis menesis ir sugalvojau cancelinti suba tada gaunu sita notification:
+
+## Android Notification PAVYZDZIAI:
+
+### Pirmas subscription buvo isigytas su nuolaida, taciau pirmasis "menesis" prabego ir jau reikia moketi pilna kaina gauname nauja notification:
