@@ -110,14 +110,9 @@ const receiveNotifications = async (req, res) => {
           `/${packageName}/purchases/subscriptions/${subscriptionId}` +
           `/tokens/${purchaseToken}?access_token=${res.data.token}`;
 
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await axios.get(url);
 
-        console.log(response, "ANDROID RESULT");
+        console.log(response.data, "ANDROID RESULT");
       } catch (error) {}
     } else {
       const decoded = jwt.decode(notificationData?.signedPayload, {
