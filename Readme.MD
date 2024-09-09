@@ -52,3 +52,76 @@ const validateReceipt = asyncHandler(async (req, res) => {
 });
 
 
+## Android FLOW
+
+1. Androide iskarto siunciamas notification i notifcation endpointa.
+
+
+
+## Notification endpointas
+
+
+```javascript
+const receiveNotifications = async (req, res) => {
+  try {
+    const notificationData = req.body;
+
+    res.status(200).send("Notification received");
+
+    // Cia Androido flow.
+    if (!notificationData.signedPayload) {
+      const decodedData = base64.decode(notificationData?.message.data);
+
+      const {
+        subscriptionNotification: { purchaseToken, subscriptionId },
+        packageName,
+      } = JSON.parse(decodedData);
+
+      try {
+        const res = await axios.post(
+          `https://app.wingmanx.ai/api/app/token`,
+          {}
+        );
+        const url =
+          "https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
+          `/${packageName}/purchases/subscriptions/${subscriptionId}` +
+          `/tokens/${purchaseToken}?access_token=${res.data.token}`;
+
+        const response = await axios.get(url);
+
+        console.log(response.data, "ANDROID RESULT");
+      } catch (error) {}
+    } else {
+  // Cia IOS FLOW
+      const decoded = jwt.decode(notificationData?.signedPayload, {
+        complete: true,
+      });
+
+      const { signedTransactionInfo, signedRenewalInfo } =
+        decoded?.payload?.data;
+
+      if (signedTransactionInfo && signedRenewalInfo) {
+        const decodedTransactionInfo = jwt.decode(signedTransactionInfo, {
+          complete: true,
+        });
+        const transactionInfoPayload = decodedTransactionInfo.payload;
+
+        const decodedRenewalInfo = jwt.decode(signedRenewalInfo, {
+          complete: true,
+        });
+        const renewalInfoPayload = decodedRenewalInfo.payload;
+
+        console.log(transactionInfoPayload);
+        console.log(renewalInfoPayload);
+      }
+    }
+  } catch (error) {
+    console.error("Error handling notification: ", error);
+    res.status(500).send("Internal Server Error.");
+  }
+};
+
+
+
+
+
