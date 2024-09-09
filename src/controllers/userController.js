@@ -177,7 +177,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
     );
     res
       .status(200)
-      .json({ message: "Subscription updated", status: response.data.status });
+      .json({ message: "Subscription updated ", status: response.data.status });
   } else {
     res.status(400).json({ message: "Ooops something went wrong" });
   }
