@@ -93,13 +93,13 @@ const receiveNotifications = async (req, res) => {
 
     res.status(200).send("Notification received");
 
-    const decodedData = base64.decode(notificationData.message.data);
+    const decodedData = base64.decode(notificationData?.message.data);
 
     const jsonData = JSON.parse(decodedData);
     console.log(jsonData, "dataaa");
     console.log("RECEIVED NOTIF!!!!");
 
-    const decoded = jwt.decode(notificationData.signedPayload, {
+    const decoded = jwt.decode(notificationData?.signedPayload, {
       complete: true,
     });
 
