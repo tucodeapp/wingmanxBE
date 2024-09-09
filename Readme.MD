@@ -123,7 +123,7 @@ const receiveNotifications = async (req, res) => {
 
 ## IOS Notification PAVYZDZIAI:
 
-### Pirmas subas su nuolaida.
+### Subas su nuolaida.
 
 ```javascript
 
@@ -172,7 +172,7 @@ const receiveNotifications = async (req, res) => {
 
 ```
 
-### Pirmas subas praejo menesis. Subas atsinaujino. Kaina tapo normali:
+### Praejo menesis. Subas atsinaujino:
 
 ```javascript
 {
@@ -212,6 +212,43 @@ const receiveNotifications = async (req, res) => {
   recentSubscriptionStartDate: 1725878807000,
   renewalDate: 1725879407000
 }
+```
+
+### Useris cancelino sub:
+
+```javascript
+ {
+   transactionId: '2000000708992553',
+   originalTransactionId: '2000000708915755',
+   webOrderLineItemId: '2000000073537927',
+   bundleId: 'com.wingmanx',
+   productId: 'wingmanxmonthly',
+   subscriptionGroupIdentifier: '21519369',
+   purchaseDate: 1725882531000,
+   originalPurchaseDate: 1725878808000,
+   expiresDate: 1725882831000,
+   quantity: 1,
+   type: 'Auto-Renewable Subscription',
+   inAppOwnershipType: 'PURCHASED',
+   signedDate: 1725882752382,
+   environment: 'Sandbox',
+   transactionReason: 'PURCHASE',
+   storefront: 'LTU',
+   storefrontId: '143520',
+   price: 34990,
+   currency: 'EUR'
+ }
+ {
+   originalTransactionId: '2000000708915755',
+   autoRenewProductId: 'wingmanxmonthly',
+   productId: 'wingmanxmonthly',
+   // NEBEATSINAUJINA
+   autoRenewStatus: 0,
+   signedDate: 1725882752382,
+   environment: 'Sandbox',
+   recentSubscriptionStartDate: 1725882531000,
+   renewalDate: 1725882831000
+ }
 ```
 
 ## Android Notification PAVYZDZIAI:
