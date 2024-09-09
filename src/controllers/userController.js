@@ -88,7 +88,9 @@ const generateToken = (id) => {
 
 const receiveNotifications = async (req, res) => {
   try {
-    // const notificationData = req.body;
+    const notificationData = req.body;
+
+    console.log(notificationData);
 
     // const decoded = jwt.decode(notificationData.signedPayload, {
     //   complete: true,
