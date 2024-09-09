@@ -145,41 +145,48 @@ const receiveNotifications = async (req, res) => {
 };
 
 const validateReceipt = asyncHandler(async (req, res) => {
-  const { receipt, userEmail } = req.body;
+  const { receipt, userEmail, orderId } = req.body;
 
-  if (!receipt || !userEmail) {
-    return res.status(400).json({ message: "Missing receipt or user ID" });
-  }
-
-  const response = await axios.post(
-    "https://sandbox.itunes.apple.com/verifyReceipt",
-    {
-      "receipt-data": receipt,
-      password: "ac06543ca9d44f6086d600cb40246693",
+  if (!orderId) {
+    if (!receipt || !userEmail) {
+      return res.status(400).json({ message: "Missing receipt or user ID" });
     }
-  );
 
-  if (response.data.status === 0) {
-    const { original_transaction_id } = response.data.latest_receipt_info.sort(
-      (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
-    )[0];
-
-    await User.findOneAndUpdate(
-      { email: userEmail },
+    const response = await axios.post(
+      "https://sandbox.itunes.apple.com/verifyReceipt",
       {
-        $set: {
-          "subscription.originalTransactionId": original_transaction_id,
-          "subscription.isIntroOfferPeriodExpired": true,
-          "subscription.isUserSubscribedToIAP": true,
-        },
-      },
-      { new: true, upsert: true }
+        "receipt-data": receipt,
+        password: "ac06543ca9d44f6086d600cb40246693",
+      }
     );
-    res
-      .status(200)
-      .json({ message: "Subscription updated ", status: response.data.status });
+
+    if (response.data.status === 0) {
+      const { original_transaction_id } =
+        response.data.latest_receipt_info.sort(
+          (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
+        )[0];
+
+      await User.findOneAndUpdate(
+        { email: userEmail },
+        {
+          $set: {
+            "subscription.originalTransactionId": original_transaction_id,
+            "subscription.isIntroOfferPeriodExpired": true,
+            "subscription.isUserSubscribedToIAP": true,
+          },
+        },
+        { new: true, upsert: true }
+      );
+      res.status(200).json({
+        message: "Subscription updated ",
+        status: response.data.status,
+      });
+    } else {
+      res.status(400).json({ message: "Ooops something went wrong" });
+    }
   } else {
-    res.status(400).json({ message: "Ooops something went wrong" });
+    console.log(orderId);
+    console.log(userEmail);
   }
 });
 
