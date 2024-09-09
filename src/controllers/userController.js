@@ -95,10 +95,6 @@ const receiveNotifications = async (req, res) => {
 
     console.log(notificationData);
 
-    if (notificationData?.message.data) {
-      console.log("aaa");
-    }
-
     // if (notificationData?.message.data) {
     //   const decodedData = base64.decode(notificationData?.message.data);
     //   const jsonData = JSON.parse(decodedData);
