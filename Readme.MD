@@ -2,7 +2,7 @@
 
 1. Appse ivyksta successful subscription purchase.
 2. Siunciame receipt i tavo nauja sukurta endpoint.
-3. naujame endpointe vykdome ios receipt validacija: 
+3. naujame endpointe vykdome ios receipt validacija:
 
 ```javascript
 const validateReceipt = asyncHandler(async (req, res) => {
@@ -16,11 +16,10 @@ const validateReceipt = asyncHandler(async (req, res) => {
     "https://sandbox.itunes.apple.com/verifyReceipt",
     {
       "receipt-data": receipt,
-       password: "ac06543ca9d44f6086d600cb40246693",
+      password: "ac06543ca9d44f6086d600cb40246693",
     }
   );
 
-  
   if (response.data.status === 0) {
     const { original_transaction_id } = response.data.latest_receipt_info.sort(
       (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
@@ -29,20 +28,20 @@ const validateReceipt = asyncHandler(async (req, res) => {
     await User.findOneAndUpdate(
       { email: userEmail },
       {
-// Suradus useri as pridedu situos values prie user.subscription objecto
+        // Suradus useri as pridedu situos values prie user.subscription objecto
         $set: {
-// Sito reikes susirasti useri
+          // Sito reikes susirasti useri
           "subscription.originalTransactionId": original_transaction_id,
-// Flagas, kad isnaudojom nuolaida
+          // Flagas, kad isnaudojom nuolaida
           "subscription.isIntroOfferPeriodExpired": true,
-// Flagas, kad turim subscriptiona
+          // Flagas, kad turim subscriptiona
           "subscription.isUserSubscribedToIAP": true,
         },
       },
       { new: true, upsert: true }
     );
 
-// Reiktu statusa grazinti. Jeigu statusas 0 tada as callinu finishTransaction appse ir tada pilnai uzfiksuoajme pardavima ir gauname notification is Apple i notifications endpointa
+    // Reiktu statusa grazinti. Jeigu statusas 0 tada as callinu finishTransaction appse ir tada pilnai uzfiksuoajme pardavima ir gauname notification is Apple i notifications endpointa
     res
       .status(200)
       .json({ message: "Subscription updated", status: response.data.status });
@@ -52,15 +51,11 @@ const validateReceipt = asyncHandler(async (req, res) => {
 });
 ```
 
-
 ## Android FLOW
 
 1. Androide iskarto siunciamas notification i notifcation endpointa.
 
-
-
 ## Notification endpointas
-
 
 ```javascript
 const receiveNotifications = async (req, res) => {
@@ -79,7 +74,6 @@ const receiveNotifications = async (req, res) => {
       } = JSON.parse(decodedData);
 
       try {
-
         // Pasiemam accessTokena is musu BE
         const res = await axios.post(
           `https://app.wingmanx.ai/api/app/token`,
@@ -95,7 +89,7 @@ const receiveNotifications = async (req, res) => {
         console.log(response.data, "ANDROID RESULT");
       } catch (error) {}
     } else {
-  // Cia IOS FLOW
+      // Cia IOS FLOW
       const decoded = jwt.decode(notificationData?.signedPayload, {
         complete: true,
       });
@@ -123,8 +117,6 @@ const receiveNotifications = async (req, res) => {
     res.status(500).send("Internal Server Error.");
   }
 };
+```
 
-
-
-
-
+## IOS RESPONSE PAVYZDZIAI:
