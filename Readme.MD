@@ -172,7 +172,7 @@ const receiveNotifications = async (req, res) => {
 
 ```
 
-### Pirmas subscription buvo isigytas su nuolaida, taciau pirmasis "menesis" prabego ir jau reikia moketi pilna kaina gauname nauja notification:
+### Pirmas subscription buvo isigytas su nuolaida, taciau pirmasis "menesis" prabego ir jau reikia moketi pilna kaina ir tada gauname nauja notification:
 
 ```javascript
 {
@@ -214,8 +214,44 @@ const receiveNotifications = async (req, res) => {
 }
 ```
 
-### Pirmas subscription buvo isigytas su nuolaida. Vienas menesis praejo uz kuri sumokejom. Atejo sekantis menesis ir sugalvojau cancelinti suba tada gaunu sita notification:
-
 ## Android Notification PAVYZDZIAI:
 
-### Pirmas subscription buvo isigytas su nuolaida, taciau pirmasis "menesis" prabego ir jau reikia moketi pilna kaina gauname nauja notification:
+### Nusipirkome pirma suba su nuolaida. Menesis prabego. Subsciptiona cancelinom. Sugalvojom nusipirkti nauja subscriptiona. Kaina be nuoaldos:
+
+```javascript
+ {
+   startTimeMillis: '1725880231482',
+   expiryTimeMillis: '1725880526647',
+   autoRenewing: true,
+   priceCurrencyCode: 'EUR',
+   priceAmountMicros: '33990000',
+   countryCode: 'LT',
+   developerPayload: '',
+   paymentState: 1,
+   orderId: 'GPA.3303-3779-7561-77965',
+   purchaseType: 0,
+   acknowledgementState: 0,
+   kind: 'androidpublisher#subscriptionPurchase'
+ }
+```
+
+### Useris cancelino subscriptiona:
+
+```javascript
+ {
+   startTimeMillis: '1725880231482',
+   expiryTimeMillis: '1725880826647',
+   autoRenewing: false,
+   priceCurrencyCode: 'EUR',
+   priceAmountMicros: '33990000',
+   countryCode: 'LT',
+   developerPayload: '',
+   paymentState: 1,
+   cancelReason: 0,
+   userCancellationTimeMillis: '1725880697384',
+   orderId: 'GPA.3303-3779-7561-77965..0',
+   purchaseType: 0,
+   acknowledgementState: 1,
+   kind: 'androidpublisher#subscriptionPurchase'
+ }
+```
