@@ -125,10 +125,11 @@ const receiveNotifications = async (req, res) => {
     //     { new: true, upsert: true }
     //   );
 
-    //   res.status(200);
     // } else {
     //   res.status(400);
     // }
+
+    res.status(200);
 
     console.log("RECEIVED NOTIF!!!!");
   } catch (error) {
