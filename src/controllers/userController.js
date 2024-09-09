@@ -96,11 +96,8 @@ const receiveNotifications = async (req, res) => {
     if (!notificationData.signedPayload) {
       const decodedData = base64.decode(notificationData?.message.data);
       const {
-        subscriptionNotification: {
-          purchaseToken,
-          subscriptionId,
-          packageName,
-        },
+        subscriptionNotification: { purchaseToken, subscriptionId },
+        packageName,
       } = JSON.parse(decodedData);
 
       try {
@@ -163,31 +160,31 @@ const validateReceipt = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Missing receipt or user ID" });
   }
 
-  const response = await axios.post(
-    "https://sandbox.itunes.apple.com/verifyReceipt",
-    {
-      "receipt-data": receipt,
-      password: "ac06543ca9d44f6086d600cb40246693",
-    }
-  );
+  // const response = await axios.post(
+  //   "https://sandbox.itunes.apple.com/verifyReceipt",
+  //   {
+  //     "receipt-data": receipt,
+  //     password: "ac06543ca9d44f6086d600cb40246693",
+  //   }
+  // );
 
-  const { original_transaction_id } = response.data.latest_receipt_info.sort(
-    (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
-  )[0];
+  // const { original_transaction_id } = response.data.latest_receipt_info.sort(
+  //   (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
+  // )[0];
 
-  const user = await User.findOneAndUpdate(
-    { email: userEmail },
-    {
-      $set: {
-        "subscription.originalTransactionId": original_transaction_id,
-        "subscription.isIntroOfferPeriodExpired": true,
-        "subscription.isUserSubscribedToIAP": true,
-      },
-    },
-    { new: true, upsert: true }
-  );
+  // const user = await User.findOneAndUpdate(
+  //   { email: userEmail },
+  //   {
+  //     $set: {
+  //       "subscription.originalTransactionId": original_transaction_id,
+  //       "subscription.isIntroOfferPeriodExpired": true,
+  //       "subscription.isUserSubscribedToIAP": true,
+  //     },
+  //   },
+  //   { new: true, upsert: true }
+  // );
 
-  console.log(user, "action 1");
+  // console.log(user, "action 1");
 
   res
     .status(200)
