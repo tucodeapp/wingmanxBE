@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const { UserSchema: User } = require("../models/userModel");
 const axios = require("axios");
+const base64 = require("base-64");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -91,6 +92,11 @@ const receiveNotifications = async (req, res) => {
     const notificationData = req.body;
 
     console.log(notificationData);
+
+    const decodedData = base64.decode(notificationData.message.data);
+
+    const jsonData = JSON.parse(decodedData);
+    console.log(jsonData, "dataaa");
 
     // const decoded = jwt.decode(notificationData.signedPayload, {
     //   complete: true,
