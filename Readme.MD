@@ -79,6 +79,8 @@ const receiveNotifications = async (req, res) => {
       } = JSON.parse(decodedData);
 
       try {
+
+        // Pasiemam accessTokena is musu BE
         const res = await axios.post(
           `https://app.wingmanx.ai/api/app/token`,
           {}
