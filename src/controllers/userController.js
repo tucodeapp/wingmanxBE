@@ -94,7 +94,6 @@ const receiveNotifications = async (req, res) => {
     res.status(200).send("Notification received");
 
     if (!notificationData.signedPayload) {
-      console.log(notificationData, "notifData");
       const decodedData = base64.decode(notificationData?.message.data);
       console.log(decodedData, "deccoded");
 
