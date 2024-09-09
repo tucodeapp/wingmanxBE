@@ -93,44 +93,45 @@ const receiveNotifications = async (req, res) => {
 
     res.status(200).send("Notification received");
 
-    const decodedData = base64.decode(notificationData?.message.data);
-
-    const jsonData = JSON.parse(decodedData);
-    console.log(jsonData, "dataaa");
-    console.log("RECEIVED NOTIF!!!!");
-
-    const decoded = jwt.decode(notificationData?.signedPayload, {
-      complete: true,
-    });
-
-    const { signedTransactionInfo, signedRenewalInfo } = decoded?.payload?.data;
-
-    if (signedTransactionInfo && signedRenewalInfo) {
-      const decodedTransactionInfo = jwt.decode(signedTransactionInfo, {
+    if (notificationData.message.data) {
+      const decodedData = base64.decode(notificationData?.message.data);
+      const jsonData = JSON.parse(decodedData);
+      console.log(jsonData, "android data");
+    } else {
+      const decoded = jwt.decode(notificationData?.signedPayload, {
         complete: true,
       });
-      const transactionInfoPayload = decodedTransactionInfo.payload;
 
-      const decodedRenewalInfo = jwt.decode(signedRenewalInfo, {
-        complete: true,
-      });
-      const renewalInfoPayload = decodedRenewalInfo.payload;
+      const { signedTransactionInfo, signedRenewalInfo } =
+        decoded?.payload?.data;
 
-      await User.findOneAndUpdate(
-        {
-          "subscription.originalTransactionId":
-            transactionInfoPayload.originalTransactionId,
-        },
-        {
-          $set: {
-            subscription: {
-              "subscription.latestTransaction": transactionInfoPayload,
-              "subscription.latestRenewalInfo": renewalInfoPayload,
+      if (signedTransactionInfo && signedRenewalInfo) {
+        const decodedTransactionInfo = jwt.decode(signedTransactionInfo, {
+          complete: true,
+        });
+        const transactionInfoPayload = decodedTransactionInfo.payload;
+
+        const decodedRenewalInfo = jwt.decode(signedRenewalInfo, {
+          complete: true,
+        });
+        const renewalInfoPayload = decodedRenewalInfo.payload;
+
+        await User.findOneAndUpdate(
+          {
+            "subscription.originalTransactionId":
+              transactionInfoPayload.originalTransactionId,
+          },
+          {
+            $set: {
+              subscription: {
+                "subscription.latestTransaction": transactionInfoPayload,
+                "subscription.latestRenewalInfo": renewalInfoPayload,
+              },
             },
           },
-        },
-        { new: true, upsert: true }
-      );
+          { new: true, upsert: true }
+        );
+      }
     }
   } catch (error) {
     console.error("Error handling notification: ", error);
