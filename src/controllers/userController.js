@@ -93,7 +93,7 @@ const receiveNotifications = async (req, res) => {
 
     res.status(200).send("Notification received");
 
-    if (notificationData.message.data) {
+    if (notificationData?.message.data) {
       const decodedData = base64.decode(notificationData?.message.data);
       const jsonData = JSON.parse(decodedData);
       console.log(jsonData, "android data");
