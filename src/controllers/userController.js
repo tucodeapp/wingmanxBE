@@ -97,25 +97,25 @@ const receiveNotifications = async (req, res) => {
       const decodedData = base64.decode(notificationData?.message.data);
       console.log(decodedData, "deccoded");
 
-      // const {
-      //   subscriptionNotification: { purchaseToken, subscriptionId },
-      //   packageName,
-      // } = JSON.parse(decodedData);
+      const {
+        subscriptionNotification: { purchaseToken, subscriptionId },
+        packageName,
+      } = JSON.parse(decodedData);
 
-      // try {
-      //   const res = await axios.post(
-      //     `https://app.wingmanx.ai/api/app/token`,
-      //     {}
-      //   );
-      //   const url =
-      //     "https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
-      //     `/${packageName}/purchases/subscriptions/${subscriptionId}` +
-      //     `/tokens/${purchaseToken}?access_token=${res.data.token}`;
+      try {
+        const res = await axios.post(
+          `https://app.wingmanx.ai/api/app/token`,
+          {}
+        );
+        const url =
+          "https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
+          `/${packageName}/purchases/subscriptions/${subscriptionId}` +
+          `/tokens/${purchaseToken}?access_token=${res.data.token}`;
 
-      //   const response = await axios.get(url);
+        const response = await axios.get(url);
 
-      //   console.log(response.data, "ANDROID RESULT");
-      // } catch (error) {}
+        console.log(response.data, "ANDROID RESULT");
+      } catch (error) {}
     } else {
       const decoded = jwt.decode(notificationData?.signedPayload, {
         complete: true,
