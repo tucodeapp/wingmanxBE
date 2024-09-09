@@ -95,7 +95,6 @@ const receiveNotifications = async (req, res) => {
 
     if (!notificationData.signedPayload) {
       const decodedData = base64.decode(notificationData?.message.data);
-      console.log(decodedData, "deccoded");
 
       const {
         subscriptionNotification: { purchaseToken, subscriptionId },
@@ -137,8 +136,6 @@ const receiveNotifications = async (req, res) => {
 
         console.log(transactionInfoPayload);
         console.log(renewalInfoPayload);
-
-        console.log("action 2");
       }
     }
   } catch (error) {
@@ -150,40 +147,40 @@ const receiveNotifications = async (req, res) => {
 const validateReceipt = asyncHandler(async (req, res) => {
   const { receipt, userEmail } = req.body;
 
-  console.log(receipt.length, "length");
-  console.log(userEmail, "length");
-
   if (!receipt || !userEmail) {
     return res.status(400).json({ message: "Missing receipt or user ID" });
   }
 
-  // const response = await axios.post(
-  //   "https://sandbox.itunes.apple.com/verifyReceipt",
-  //   {
-  //     "receipt-data": receipt,
-  //     password: "ac06543ca9d44f6086d600cb40246693",
-  //   }
-  // );
+  const response = await axios.post(
+    "https://sandbox.itunes.apple.com/verifyReceipt",
+    {
+      "receipt-data": receipt,
+      password: "ac06543ca9d44f6086d600cb40246693",
+    }
+  );
 
-  // const { original_transaction_id } = response.data.latest_receipt_info.sort(
-  //   (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
-  // )[0];
+  if (response.data.status === 0) {
+    const { original_transaction_id } = response.data.latest_receipt_info.sort(
+      (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
+    )[0];
 
-  // const user = await User.findOneAndUpdate(
-  //   { email: userEmail },
-  //   {
-  //     $set: {
-  //       "subscription.originalTransactionId": original_transaction_id,
-  //       "subscription.isIntroOfferPeriodExpired": true,
-  //       "subscription.isUserSubscribedToIAP": true,
-  //     },
-  //   },
-  //   { new: true, upsert: true }
-  // );
-
-  // console.log(user, "action 1");
-
-  res.status(200).json({ message: "Subscription updated" });
+    await User.findOneAndUpdate(
+      { email: userEmail },
+      {
+        $set: {
+          "subscription.originalTransactionId": original_transaction_id,
+          "subscription.isIntroOfferPeriodExpired": true,
+          "subscription.isUserSubscribedToIAP": true,
+        },
+      },
+      { new: true, upsert: true }
+    );
+    res
+      .status(200)
+      .json({ message: "Subscription updated", status: response.data.status });
+  } else {
+    res.status(400).json({ message: "Ooops something went wrong" });
+  }
 });
 
 module.exports = {
