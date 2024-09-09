@@ -94,26 +94,29 @@ const receiveNotifications = async (req, res) => {
     res.status(200).send("Notification received");
 
     if (!notificationData.signedPayload) {
+      console.log(notificationData, "notifData");
       const decodedData = base64.decode(notificationData?.message.data);
-      const {
-        subscriptionNotification: { purchaseToken, subscriptionId },
-        packageName,
-      } = JSON.parse(decodedData);
+      console.log(decodedData, "deccoded");
 
-      try {
-        const res = await axios.post(
-          `https://app.wingmanx.ai/api/app/token`,
-          {}
-        );
-        const url =
-          "https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
-          `/${packageName}/purchases/subscriptions/${subscriptionId}` +
-          `/tokens/${purchaseToken}?access_token=${res.data.token}`;
+      // const {
+      //   subscriptionNotification: { purchaseToken, subscriptionId },
+      //   packageName,
+      // } = JSON.parse(decodedData);
 
-        const response = await axios.get(url);
+      // try {
+      //   const res = await axios.post(
+      //     `https://app.wingmanx.ai/api/app/token`,
+      //     {}
+      //   );
+      //   const url =
+      //     "https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
+      //     `/${packageName}/purchases/subscriptions/${subscriptionId}` +
+      //     `/tokens/${purchaseToken}?access_token=${res.data.token}`;
 
-        console.log(response.data, "ANDROID RESULT");
-      } catch (error) {}
+      //   const response = await axios.get(url);
+
+      //   console.log(response.data, "ANDROID RESULT");
+      // } catch (error) {}
     } else {
       const decoded = jwt.decode(notificationData?.signedPayload, {
         complete: true,
@@ -181,9 +184,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
 
   // console.log(user, "action 1");
 
-  res
-    .status(200)
-    .json({ message: "Subscription updated", status: response.data.status });
+  res.status(200).json({ message: "Subscription updated" });
 });
 
 module.exports = {
