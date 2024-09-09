@@ -50,6 +50,7 @@ const validateReceipt = asyncHandler(async (req, res) => {
     res.status(400).json({ message: "Ooops something went wrong" });
   }
 });
+```
 
 
 ## Android FLOW
