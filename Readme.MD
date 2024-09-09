@@ -1,2 +1,18 @@
-1. Models they are objects which define how to data looks inside BE
-2. Controllers are callback functions that are called when we go to specific endpoint
+# Project Title
+
+## Introduction
+
+This section explains the purpose of the project.
+
+## Installation
+
+Follow these steps to install the project.
+
+### Requirements
+
+- Python 3.8+
+- pip
+
+## Usage
+
+Instructions on how to use the project.
