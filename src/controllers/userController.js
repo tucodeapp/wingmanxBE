@@ -94,6 +94,8 @@ const receiveNotifications = async (req, res) => {
     res.status(200).send("Notification received");
 
     if (!notificationData.signedPayload) {
+      console.log("ACTION 2");
+
       const decodedData = base64.decode(notificationData?.message.data);
 
       const {
@@ -187,6 +189,8 @@ const validateReceipt = asyncHandler(async (req, res) => {
   } else {
     console.log(orderId);
     console.log(userEmail);
+
+    console.log("ACTION 1");
   }
 });
 
