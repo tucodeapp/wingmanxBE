@@ -123,7 +123,7 @@ const receiveNotifications = async (req, res) => {
 
 ## IOS Notification PAVYZDZIAI:
 
-### Pirmas subscription isigytas su nuolaida.
+### Pirmas subas su nuolaida.
 
 ```javascript
 
@@ -172,7 +172,7 @@ const receiveNotifications = async (req, res) => {
 
 ```
 
-### Pirmas subscription buvo isigytas su nuolaida, taciau pirmasis "menesis" prabego ir jau reikia moketi pilna kaina ir tada gauname nauja notification:
+### Pirmas subas praejo menesis. Subas atsinaujino. Kaina tapo normali:
 
 ```javascript
 {
@@ -216,31 +216,70 @@ const receiveNotifications = async (req, res) => {
 
 ## Android Notification PAVYZDZIAI:
 
-### Nusipirkome pirma suba su nuolaida. Menesis prabego. Subsciptiona cancelinom. Sugalvojom nusipirkti nauja subscriptiona. Kaina be nuoaldos:
+### Subas be nuolaidos buvo nupirktas:
+
+```javascript
+{
+  startTimeMillis: '1725881668471',
+  expiryTimeMillis: '1725881963839',
+  autoRenewing: true,
+  priceCurrencyCode: 'EUR',
+  priceAmountMicros: '33990000',
+  countryCode: 'LT',
+  developerPayload: '',
+  paymentState: 1,
+  orderId: 'GPA.3376-3433-2495-09140',
+  purchaseType: 0,
+  acknowledgementState: 0,
+  kind: 'androidpublisher#subscriptionPurchase'
+}
+```
+
+### Subas be nuolaidos automatiskai prasitese po 5min:
 
 ```javascript
  {
-   startTimeMillis: '1725880231482',
-   expiryTimeMillis: '1725880526647',
+   startTimeMillis: '1725881668471',
+   expiryTimeMillis: '1725882263839',
    autoRenewing: true,
    priceCurrencyCode: 'EUR',
    priceAmountMicros: '33990000',
    countryCode: 'LT',
    developerPayload: '',
    paymentState: 1,
-   orderId: 'GPA.3303-3779-7561-77965',
+   orderId: 'GPA.3376-3433-2495-09140..0',
    purchaseType: 0,
-   acknowledgementState: 0,
+   acknowledgementState: 1,
    kind: 'androidpublisher#subscriptionPurchase'
  }
+```
+
+### Subas be nuolaidos buvo sustabdytas 5 minutem:
+
+```javascript
+{
+  startTimeMillis: '1725881668471',
+  expiryTimeMillis: '1725882263839',
+  autoRenewing: true,
+  priceCurrencyCode: 'EUR',
+  priceAmountMicros: '33990000',
+  countryCode: 'LT',
+  developerPayload: '',
+  paymentState: 1,
+  orderId: 'GPA.3376-3433-2495-09140..0',
+  purchaseType: 0,
+  autoResumeTimeMillis: '1725882563839',
+  acknowledgementState: 1,
+  kind: 'androidpublisher#subscriptionPurchase'
+}
 ```
 
 ### Useris cancelino subscriptiona:
 
 ```javascript
  {
-   startTimeMillis: '1725880231482',
-   expiryTimeMillis: '1725880826647',
+   startTimeMillis: '1725881668471',
+   expiryTimeMillis: '1725882263839',
    autoRenewing: false,
    priceCurrencyCode: 'EUR',
    priceAmountMicros: '33990000',
@@ -248,8 +287,8 @@ const receiveNotifications = async (req, res) => {
    developerPayload: '',
    paymentState: 1,
    cancelReason: 0,
-   userCancellationTimeMillis: '1725880697384',
-   orderId: 'GPA.3303-3779-7561-77965..0',
+   userCancellationTimeMillis: '1725882164047',
+   orderId: 'GPA.3376-3433-2495-09140..0',
    purchaseType: 0,
    acknowledgementState: 1,
    kind: 'androidpublisher#subscriptionPurchase'
