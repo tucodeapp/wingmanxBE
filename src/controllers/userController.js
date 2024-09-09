@@ -91,12 +91,13 @@ const receiveNotifications = async (req, res) => {
   try {
     const notificationData = req.body;
 
-    console.log(notificationData);
+    res.status(200).send("Notification received");
 
     const decodedData = base64.decode(notificationData.message.data);
 
     const jsonData = JSON.parse(decodedData);
     console.log(jsonData, "dataaa");
+    console.log("RECEIVED NOTIF!!!!");
 
     // const decoded = jwt.decode(notificationData.signedPayload, {
     //   complete: true,
@@ -134,10 +135,6 @@ const receiveNotifications = async (req, res) => {
     // } else {
     //   res.status(400);
     // }
-
-    res.status(200);
-
-    console.log("RECEIVED NOTIF!!!!");
   } catch (error) {
     console.error("Error handling notification: ", error);
     res.status(500).send("Internal Server Error.");
