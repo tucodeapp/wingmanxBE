@@ -93,7 +93,7 @@ const receiveNotifications = async (req, res) => {
 
     console.log(req.body);
 
-    // res.status(200).send("Notification received");
+    res.status(200).send("Notification received");
 
     // if (!notificationData.signedPayload) {
     //   console.log("ACTION 2");
