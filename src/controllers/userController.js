@@ -91,8 +91,6 @@ const receiveNotifications = async (req, res) => {
   try {
     const notificationData = req.body;
 
-    console.log(req.body);
-
     res.status(200).send("Notification received");
 
     const decoded = jwt.decode(notificationData?.signedPayload, {
