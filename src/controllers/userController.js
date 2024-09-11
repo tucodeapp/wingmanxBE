@@ -95,6 +95,12 @@ const receiveNotifications = async (req, res) => {
 
     res.status(200).send("Notification received");
 
+    const decoded = jwt.decode(notificationData?.signedPayload, {
+      complete: true,
+    });
+
+    console.log(decoded);
+
     // if (!notificationData.signedPayload) {
     //   console.log("ACTION 2");
 
