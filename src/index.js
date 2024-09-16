@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const app = require("./app");
 const admin = require("firebase-admin");
 
-\
 admin.initializeApp({
   credential: admin.credential.cert(process.env.GOOGLE_APPLICATION_CREDENTIALS),
 });
