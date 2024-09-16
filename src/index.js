@@ -1,6 +1,12 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const app = require("./app");
+const admin = require("firebase-admin");
+
+var serviceAccount = require("../netzet-family-firebase-adminsdk-8s6of-a211c2f750.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 const PORT = process.env.PORT || 3000;
 
