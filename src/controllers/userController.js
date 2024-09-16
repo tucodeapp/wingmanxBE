@@ -2,8 +2,6 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const asyncHandler = require("express-async-handler");
 const { UserSchema: User } = require("../models/userModel");
-const axios = require("axios");
-const base64 = require("base-64");
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -53,8 +51,6 @@ const registerUser = asyncHandler(async (req, res) => {
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(req.body);
-
   const user = await User.findOne({ email });
 
   if (user && (await bcrypt.compare(password, user.password))) {
@@ -87,124 +83,8 @@ const generateToken = (id) => {
   });
 };
 
-const receiveNotifications = async (req, res) => {
-  try {
-    const notificationData = req.body;
-
-    res.status(200).send("Notification received");
-
-    const decoded = jwt.decode(notificationData?.signedPayload, {
-      complete: true,
-    });
-
-    console.log(decoded);
-
-    // if (!notificationData.signedPayload) {
-    //   console.log("ACTION 2");
-
-    //   const decodedData = base64.decode(notificationData?.message.data);
-
-    //   const {
-    //     subscriptionNotification: { purchaseToken, subscriptionId },
-    //     packageName,
-    //   } = JSON.parse(decodedData);
-
-    //   try {
-    //     const res = await axios.post(
-    //       `https://app.wingmanx.ai/api/app/token`,
-    //       {}
-    //     );
-    //     const url =
-    //       "https://androidpublisher.googleapis.com/androidpublisher/v3/applications" +
-    //       `/${packageName}/purchases/subscriptions/${subscriptionId}` +
-    //       `/tokens/${purchaseToken}?access_token=${res.data.token}`;
-
-    //     const response = await axios.get(url);
-
-    //     console.log(response.data, "ANDROID RESULT");
-    //   } catch (error) {}
-    // } else {
-    //   const decoded = jwt.decode(notificationData?.signedPayload, {
-    //     complete: true,
-    //   });
-
-    //   const { signedTransactionInfo, signedRenewalInfo } =
-    //     decoded?.payload?.data;
-
-    //   if (signedTransactionInfo && signedRenewalInfo) {
-    //     const decodedTransactionInfo = jwt.decode(signedTransactionInfo, {
-    //       complete: true,
-    //     });
-    //     const transactionInfoPayload = decodedTransactionInfo.payload;
-
-    //     const decodedRenewalInfo = jwt.decode(signedRenewalInfo, {
-    //       complete: true,
-    //     });
-    //     const renewalInfoPayload = decodedRenewalInfo.payload;
-
-    //     console.log(transactionInfoPayload);
-    //     console.log(renewalInfoPayload);
-    //   }
-    // }
-  } catch (error) {
-    console.error("Error handling notification: ", error);
-    res.status(500).send("Internal Server Error.");
-  }
-};
-
-const validateReceipt = asyncHandler(async (req, res) => {
-  const { receipt, userEmail, orderId } = req.body;
-
-  console.log(orderId);
-
-  if (!orderId) {
-    if (!receipt || !userEmail) {
-      return res.status(400).json({ message: "Missing receipt or user ID" });
-    }
-
-    const response = await axios.post(
-      "https://sandbox.itunes.apple.com/verifyReceipt",
-      {
-        "receipt-data": receipt,
-        password: "ac06543ca9d44f6086d600cb40246693",
-      }
-    );
-
-    if (response.data.status === 0) {
-      const { original_transaction_id } =
-        response.data.latest_receipt_info.sort(
-          (a, b) => Number(b.expires_date_ms) - Number(a.expires_date_ms)
-        )[0];
-
-      await User.findOneAndUpdate(
-        { email: userEmail },
-        {
-          $set: {
-            "subscription.originalTransactionId": original_transaction_id,
-            "subscription.isIntroOfferPeriodExpired": true,
-            "subscription.isUserSubscribedToIAP": true,
-          },
-        },
-        { new: true, upsert: true }
-      );
-      res.status(200).json({
-        message: "Subscription updated ",
-        status: response.data.status,
-      });
-    } else {
-      res.status(400).json({ message: "Ooops something went wrong" });
-    }
-  } else {
-    console.log(orderId);
-    console.log(userEmail);
-    console.log("ACTION 1");
-  }
-});
-
 module.exports = {
   registerUser,
   loginUser,
   getCurrentUser,
-  receiveNotifications,
-  validateReceipt,
 };
