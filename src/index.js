@@ -15,7 +15,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Mongoose connected");
+    console.log("Mongoose connected   ");
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
