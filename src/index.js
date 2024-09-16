@@ -3,8 +3,10 @@ const mongoose = require("mongoose");
 const app = require("./app");
 const admin = require("firebase-admin");
 
+const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
 admin.initializeApp({
-  credential: admin.credential.cert(process.env.GOOGLE_APPLICATION_CREDENTIALS),
+  credential: admin.credential.cert(serviceAccount),
 });
 
 const PORT = process.env.PORT || 3000;
