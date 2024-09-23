@@ -1,7 +1,7 @@
 const moment = require("moment");
 
 const organisers = [
-  { date: "2023-09-27", name: "Aurimas" },
+  { date: "2024-09-27", name: "Aurimas" },
   { date: "2024-10-04", name: "Gerbert" },
   { date: "2024-10-11", name: "Kristina" },
   { date: "2024-10-18", name: "Faustas" },
@@ -39,9 +39,11 @@ const organisers = [
 ];
 
 const fetchLunchData = (req, res) => {
-  const upcomingLunchOrganiser = organisers.forEach((organiser, index) =>
-    console.log(moment().isAfter(organiser.date), index)
-  );
+  const upcomingLunchOrganiser = organisers.forEach((organiser, index) => {
+    if (!moment().isAfter(organiser.date)) {
+      return organiser;
+    }
+  });
 
   console.log(upcomingLunchOrganiser);
   res.status(200).json({
