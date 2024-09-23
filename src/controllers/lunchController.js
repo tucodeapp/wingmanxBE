@@ -39,7 +39,7 @@ const organisers = [
 ];
 
 const fetchLunchData = (req, res) => {
-  const upcomingLunchOrganiser = organisers.forEach((organiser, index) => {
+  const upcomingLunchOrganiser = organisers.map((organiser, index) => {
     if (!moment().isAfter(organiser.date)) {
       return organiser;
     }
