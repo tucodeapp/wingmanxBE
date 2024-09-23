@@ -39,8 +39,8 @@ const organisers = [
 ];
 
 const fetchLunchData = (req, res) => {
-  const upcomingLunchOrganiser = organisers.forEach((organiser) =>
-    console.log(moment().isBefore(organiser.date))
+  const upcomingLunchOrganiser = organisers.forEach((organiser, index) =>
+    console.log(moment().isAfter(organiser.date), index)
   );
 
   console.log(upcomingLunchOrganiser);
