@@ -47,7 +47,7 @@ const fetchSingleQuote = (req, res) => {
   const randomQuoteIndex = Math.floor(Math.random() * quotes.length);
   res.status(200).json({
     success: 1,
-    quote: quotes[randomQuoteIndex],
+    data: quotes[randomQuoteIndex],
   });
 };
 
