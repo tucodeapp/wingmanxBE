@@ -2,12 +2,12 @@ const quotes = [
   {
     quote:
       "The only limit to our realization of tomorrow is our doubts of today.",
-    author: "Franklin D. Roosevelt",
+    author: "Franklin Roosevelt",
   },
   {
     quote:
       "In the end, we will remember not the words of our enemies, but the silence of our friends.",
-    author: "Martin Luther King Jr.",
+    author: "Martin Luther.",
   },
   {
     quote: "Life is what happens when you're busy making other plans.",
@@ -22,12 +22,12 @@ const quotes = [
   {
     quote:
       "To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment.",
-    author: "Ralph Waldo Emerson",
+    author: "Ralph  Emerson",
   },
   {
     quote:
       "Do not go where the path may lead, go instead where there is no path and leave a trail.",
-    author: "Ralph Waldo Emerson",
+    author: "Ralph Emerson",
   },
   {
     quote: "You miss 100% of the shots you don't take.",
